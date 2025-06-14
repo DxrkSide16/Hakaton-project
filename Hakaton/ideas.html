@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Книга незавершених ідей</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./header.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      color: #1e293b;
+      margin: 0;
+      padding: 6rem 3rem 3rem 3rem;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      font-size: 18px;
+      /* збільшений базовий шрифт */
+      line-height: 1.6;
+    }
+
+    body.dark {
+      background: #0f172a;
+      color: #f1f5f9;
+    }
+
+    .main-nav {
+      position: fixed;
+      top: 5.2rem;
+      left: 0;
+      width: 100%;
+      background: #ffffff;
+      border-bottom: 1px solid #cbd5e1;
+      z-index: 999;
+      padding: 0.8rem 2rem;
+    }
+
+    .main-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .main-nav a {
+      text-decoration: none;
+      color: #1e293b;
+      font-weight: 600;
+      font-size: 1.15rem;
+      /* збільшений шрифт меню */
+      transition: color 0.3s ease;
+    }
+
+    .main-nav a:hover {
+      color: #3b82f6;
+    }
+
+    body.dark .main-nav {
+      background: #0f172a;
+      border-color: #475569;
+    }
+
+    body.dark .main-nav a {
+      color: #f1f5f9;
+    }
+
+    
+
+    .search-container {
+      max-width: 700px;
+      margin: 6.5rem auto 3rem auto;
+      background: transparent;
+      padding: 0 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      font-size: 1.2rem;
+      /* збільшений шрифт */
+      border-radius: 10px;
+      border: 1.5px solid #cbd5e1;
+      font-family: inherit;
+      transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease;
+    }
+
+    body.dark .search-input {
+      background-color: #334155;
+      border-color: #475569;
+      color: #f1f5f9;
+    }
+
+    .search-input::placeholder {
+      color: #94a3b8;
+      transition: color 0.5s ease;
+    }
+
+    body.dark .search-input::placeholder {
+      color: #64748b;
+    }
+
+    .idea,
+    .new-idea-form {
+      background-color: #ffffff;
+      border-radius: 14px;
+      padding: 2rem 2.5rem;
+      margin: 2rem auto;
+      max-width: 700px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+      border: 1.5px solid #e2e8f0;
+      color: #1e293b;
+      transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+      font-size: 1.1rem;
+    }
+
+    body.dark .idea,
+    body.dark .new-idea-form {
+      background-color: #1e293b;
+      border-color: #334155;
+      color: #e2e8f0;
+    }
+
+    label {
+      font-size: 1.05rem;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+
+    textarea,
+    input[type="text"] {
+      width: 100%;
+      padding: 1rem;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-family: inherit;
+      background-color: #fff;
+      color: #1e293b;
+      min-height: 4rem;
+      resize: vertical;
+      transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease;
+    }
+
+    body.dark textarea,
+    body.dark input[type="text"] {
+      background-color: #334155;
+      border-color: #475569;
+      color: #f1f5f9;
+    }
+
+    textarea:focus,
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35);
+    }
+
+    button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      margin-top: 0.6rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    .delete-button {
+      background-color: #ef4444;
+      margin-left: 0.8rem;
+    }
+
+    .delete-button:hover {
+      background-color: #991b1b;
+    }
+
+    .comment {
+      background-color: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin: 0.8rem 0;
+      color: #475569;
+      font-size: 1rem;
+      transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease;
+    }
+
+    body.dark .comment {
+      background-color: #1e293b;
+      border-color: #475569;
+      color: #f1f5f9;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 1rem;
+      color: #94a3b8;
+      margin-top: 4rem;
+      transition: color 0.5s ease;
+      padding-bottom: 2rem;
+    }
+
+    .idea-actions {
+      margin-top: 1.4rem;
+    }
+
+    .idea {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease, background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+    }
+
+    .idea.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .quoted-comment {
+      font-style: italic;
+      font-size: 1rem;
+      color: #64748b;
+      margin-bottom: 0.6rem;
+      padding-left: 0.6rem;
+      border-left: 3px solid #cbd5e1;
+      transition: color 0.5s ease, border-left-color 0.5s ease;
+    }
+
+    body.dark .quoted-comment {
+      color: #94a3b8;
+      border-left-color: #475569;
+    }
+
+
+
+ 
+  </style>
+</head>
+  
+<body>
+
+    <header>
+    <div class="logo-container">
+      <div class="min-div">
+        <a href="index.html"><img src="img/IMG_3148-removebg-preview.png" alt="Логотип" /></a>
+      </div>
+      <nav class="nav-links">
+        <a href="ideas.html" class="activ">Ідеї</a>
+        <a href="create.html">Нова ідея</a>
+        <a href="about.html">Про нас</a>
+        <a href="contacts.html">Контакти</a>
+      </nav>
+      <div class="min-div">
+        <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+        <a href="./login.html" class="profile-icon" title="Профіль" aria-label="Профіль">
+          <img src="img/user.png" alt="">
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <div class="search-container">
+    <input type="text" id="search-input" class="search-input" placeholder="🔍 Пошук ідей..." oninput="filterIdeas()"
+      autocomplete="off" spellcheck="false" />
+  </div>
+
+  
+
+  <div id="ideas-container"></div>
+
+  <div class="footer"></div>
+
+  <script>
+    let ideaCounter = Number(localStorage.getItem("ideaCounter")) || 3;
+
+    function autoGrow(element) {
+      element.style.height = "auto";
+      element.style.height = element.scrollHeight + "px";
+    }
+
+    document.addEventListener("input", function (event) {
+      if (event.target.tagName.toLowerCase() === "textarea") {
+        autoGrow(event.target);
+      }
+    });
+
+    function saveIdeas(ideas) {
+      localStorage.setItem("ideas", JSON.stringify(ideas));
+    }
+
+    function loadIdeas() {
+      const ideas = JSON.parse(localStorage.getItem("ideas") || "[]");
+      const container = document.getElementById("ideas-container");
+      container.innerHTML = "";
+
+      ideas.forEach(idea => {
+        const div = document.createElement("div");
+        div.className = "idea";
+        div.setAttribute("data-title", idea.title.toLowerCase());
+        div.setAttribute("data-desc", idea.description.toLowerCase());
+        div.innerHTML = `
+          <h2>🧠 ${idea.title}</h2>
+          <p>${idea.description}</p>
+          <label for="comment-new-${idea.id}">Добудуй ідею:</label>
+          <textarea id="comment-new-${idea.id}" placeholder="Твоя думка..."></textarea>
+          <div class="idea-actions">
+            <button onclick="addComment('${idea.id}')">💬 Додати</button>
+            <button class="delete-button" onclick="deleteIdea(${idea.id})">🗑 Видалити ідею</button>
+          </div>
+          <div id="comments-${idea.id}"></div>
+        `;
+        container.appendChild(div);
+        loadComments(idea.id);
+      });
+
+      observeIdeas();
+      filterIdeas();
+    }
+
+    function createIdea() {
+      const title = document.getElementById("new-title").value.trim();
+      const description = document.getElementById("new-desc").value.trim();
+      if (!title || !description) return;
+
+      const ideas = JSON.parse(localStorage.getItem("ideas") || "[]");
+      ideaCounter++;
+      const newIdea = { id: ideaCounter, title, description };
+      ideas.push(newIdea);
+
+      saveIdeas(ideas);
+      localStorage.setItem("ideaCounter", ideaCounter.toString());
+
+      document.getElementById("new-title").value = "";
+      document.getElementById("new-desc").value = "";
+
+      loadIdeas();
+    }
+
+    function deleteIdea(id) {
+      const ideas = JSON.parse(localStorage.getItem("ideas") || "[]");
+      const updated = ideas.filter(idea => idea.id !== id);
+      saveIdeas(updated);
+      localStorage.removeItem("comments-" + id);
+      loadIdeas();
+    }
+
+    function loadComments(id) {
+      const container = document.getElementById("comments-" + id);
+      container.innerHTML = "";
+
+      const stored = localStorage.getItem("comments-" + id);
+      const comments = stored ? JSON.parse(stored) : [];
+
+      comments.forEach((c, index) => {
+        const commentDiv = document.createElement("div");
+        commentDiv.className = "comment";
+        commentDiv.style.marginLeft = `${c.level * 20}px`;
+
+        const quotedComment = c.quotedText
+          ? `<div class="quoted-comment">${c.quotedText}</div>`
+          : "";
+
+        commentDiv.innerHTML = `
+          ${quotedComment}
+          <p>💬 ${c.text}</p>
+          <div>
+            <textarea id="reply-${id}-${index}" placeholder="Відповідь..."></textarea>
+            <button onclick="replyTo('${id}', ${index})">↪ Відповісти</button>
+            <button class="delete-button" onclick="deleteComment('${id}', ${index})">🗑 Видалити</button>
+          </div>
+        `;
+
+        container.appendChild(commentDiv);
+      });
+    }
+
+    function addComment(id) {
+      const input = document.getElementById("comment-new-" + id);
+      const text = input.value.trim();
+      if (!text) return;
+
+      const stored = localStorage.getItem("comments-" + id);
+      const comments = stored ? JSON.parse(stored) : [];
+      comments.push({ text, level: 0 });
+
+      localStorage.setItem("comments-" + id, JSON.stringify(comments));
+      input.value = "";
+      loadComments(id);
+    }
+
+    function replyTo(id, index) {
+      const replyInput = document.getElementById(`reply-${id}-${index}`);
+      const text = replyInput.value.trim();
+      if (!text) return;
+
+      const stored = localStorage.getItem("comments-" + id);
+      const comments = stored ? JSON.parse(stored) : [];
+
+      const parent = comments[index];
+      const newComment = {
+        text: text,
+        level: parent.level + 1,
+        quotedText: parent.text
+      };
+
+      comments.splice(index + 1, 0, newComment);
+      localStorage.setItem("comments-" + id, JSON.stringify(comments));
+      loadComments(id);
+    }
+
+    function deleteComment(id, index) {
+      const stored = localStorage.getItem("comments-" + id);
+      const comments = stored ? JSON.parse(stored) : [];
+
+      const level = comments[index].level;
+      let deleteCount = 1;
+
+      for (let i = index + 1; i < comments.length; i++) {
+        if (comments[i].level > level) {
+          deleteCount++;
+        } else {
+          break;
+        }
+      }
+
+      comments.splice(index, deleteCount);
+      localStorage.setItem("comments-" + id, JSON.stringify(comments));
+      loadComments(id);
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+    }
+
+    function observeIdeas() {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove("visible");
+            void entry.target.offsetWidth;
+            entry.target.classList.add("visible");
+          } else {
+            entry.target.classList.remove("visible");
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.idea').forEach(idea => observer.observe(idea));
+    }
+
+    function filterIdeas() {
+      const query = document.getElementById("search-input").value.toLowerCase();
+      document.querySelectorAll(".idea").forEach(idea => {
+        const title = idea.getAttribute("data-title");
+        const desc = idea.getAttribute("data-desc");
+        if (title.includes(query) || desc.includes(query)) {
+          idea.style.display = "";
+        } else {
+          idea.style.display = "none";
+        }
+      });
+    }
+
+    window.onload = () => {
+      if (!localStorage.getItem("ideas")) {
+        const defaultIdeas = [
+          {
+            id: 1,
+            title: "Додаток для обміну речами",
+            description: "Застосунок, де можна обмінювати речі, але не знаю, як реалізувати геолокацію."
+          },
+          {
+            id: 2,
+            title: "Гра, яка допомагає вчити історію",
+            description: "Гра з персонажами з різних епох, але не знаю, як зробити її цікавою."
+          },
+          {
+            id: 3,
+            title: "Інтерактивна мапа можливостей для молоді",
+            description: "Мапа, де видно всі гранти, події, хакатони — але не знаю, як їх оновлювати."
+          }
+        ];
+        localStorage.setItem("ideas", JSON.stringify(defaultIdeas));
+        localStorage.setItem("ideaCounter", "3");
+      }
+
+      const theme = localStorage.getItem("theme");
+      if (theme === "dark") {
+        document.body.classList.add("dark");
+      }
+
+      loadIdeas();
+    };
+  </script>
+
+</body>
+
+</html>
